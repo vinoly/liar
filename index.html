@@ -273,7 +273,7 @@ function renderDice() {
 }
 
 function adj(k, d) {
-  if (k === 'total') { total = Math.max(myDice.length, Math.min(30, total + d)); document.getElementById('total-val').textContent = total; }
+  if (k === 'total') { total = Math.max(myDice.length, Math.min(999, total + d)); document.getElementById('total-val').textContent = total; }
   if (k === 'qty') { bidQty = Math.max(1, Math.min(30, bidQty + d)); document.getElementById('qty-val').textContent = bidQty; }
   calc();
 }
