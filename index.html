@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Liar's Dice</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500&display=swap');
+
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface2: #222222;
+    --border: rgba(255,255,255,0.08);
+    --border-strong: rgba(255,255,255,0.15);
+    --text: #f0ede8;
+    --text-muted: #888580;
+    --text-dim: #4a4744;
+    --accent: #d4a853;
+    --accent-dim: rgba(212,168,83,0.12);
+    --accent-border: rgba(212,168,83,0.35);
+    --green: #5a8f4e;
+    --green-bg: rgba(90,143,78,0.12);
+    --green-border: rgba(90,143,78,0.3);
+    --green-text: #8fc47f;
+    --amber: #b87a2e;
+    --amber-bg: rgba(184,122,46,0.12);
+    --amber-border: rgba(184,122,46,0.3);
+    --amber-text: #e0a84a;
+    --red: #8f4a4a;
+    --red-bg: rgba(143,74,74,0.12);
+    --red-border: rgba(143,74,74,0.3);
+    --red-text: #c47f7f;
+    --radius: 10px;
+    --radius-sm: 7px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100dvh;
+    display: flex;
+    justify-content: center;
+  }
+
+  .app {
+    width: 100%;
+    max-width: 430px;
+    padding: 16px 14px 32px;
+  }
+
+  header {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 18px;
+    padding: 4px 0;
+  }
+
+  header h1 {
+    font-family: 'DM Mono', monospace;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: .04em;
+    color: var(--accent);
+  }
+
+  header span {
+    font-size: 12px;
+    color: var(--text-dim);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px;
+    margin-bottom: 10px;
+  }
+
+  .card-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .die-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .die {
+    width: 54px;
+    height: 54px;
+    border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    cursor: pointer;
+    background: var(--surface2);
+    user-select: none;
+    transition: transform .08s, background .1s;
+  }
+
+  .die:active { transform: scale(.92); background: #2a2a2a; }
+
+  .add-die-btn {
+    width: 54px;
+    height: 54px;
+    border: 0.5px dashed var(--border-strong);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-dim);
+    font-size: 22px;
+    background: transparent;
+    transition: color .1s;
+  }
+
+  .add-die-btn:active { color: var(--text-muted); }
+
+  .remove-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+  }
+
+  .remove-btn {
+    font-size: 12px;
+    color: var(--text-dim);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 2px 4px;
+    font-family: 'DM Sans', sans-serif;
+    transition: color .1s;
+  }
+
+  .remove-btn:active { color: var(--text-muted); }
+
+  .row2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .field-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 7px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .stepper {
+    display: flex;
+    align-items: center;
+  }
+
+  .step-btn {
+    width: 44px;
+    height: 44px;
+    border: 0.5px solid var(--border-strong);
+    background: var(--surface2);
+    color: var(--text);
+    font-size: 20px;
+    font-weight: 400;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .1s;
+    user-select: none;
+  }
+
+  .step-btn:first-child { border-radius: var(--radius-sm) 0 0 var(--radius-sm); }
+  .step-btn:last-child { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+  .step-btn:active { background: #2e2e2e; }
+
+  .step-val {
+    min-width: 44px;
+    height: 44px;
+    border-top: 0.5px solid var(--border-strong);
+    border-bottom: 0.5px solid var(--border-strong);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 500;
+    background: var(--surface);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .face-grid {
+    display: flex;
+    gap: 7px;
+    flex-wrap: wrap;
+  }
+
+  .face-btn {
+    width: 46px;
+    height: 46px;
+    border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    background: var(--surface2);
+    color: var(--text);
+    font-size: 22px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform .08s, background .1s, border-color .1s;
+    user-select: none;
+  }
+
+  .face-btn.active {
+    border: 1.5px solid var(--accent);
+    background: var(--accent-dim);
+  }
+
+  .face-btn:active { transform: scale(.91); }
+
+  .verdict-card {
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    border: 0.5px solid var(--border);
+  }
+
+  .verdict-good { background: var(--green-bg); border-color: var(--green-border); }
+  .verdict-risky { background: var(--amber-bg); border-color: var(--amber-border); }
+  .verdict-bad { background: var(--red-bg); border-color: var(--red-border); }
+
+  .verdict-title {
+    font-size: 17px;
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+
+  .verdict-good .verdict-title { color: var(--green-text); }
+  .verdict-risky .verdict-title { color: var(--amber-text); }
+  .verdict-bad .verdict-title { color: var(--red-text); }
+
+  .verdict-sub {
+    font-size: 13px;
+  }
+
+  .verdict-good .verdict-sub { color: var(--green); }
+  .verdict-risky .verdict-sub { color: var(--amber); }
+  .verdict-bad .verdict-sub { color: var(--red); }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .stat {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+  }
+
+  .stat-label {
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+  }
+
+  .stat-val {
+    font-size: 26px;
+    font-weight: 500;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .bar-wrap {
+    height: 4px;
+    background: var(--surface2);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 7px;
+  }
+
+  .bar {
+    height: 100%;
+    border-radius: 2px;
+    transition: width .35s ease;
+  }
+
+  .raise-box {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+  }
+
+  .raise-label {
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-bottom: 3px;
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+  }
+
+  .raise-val {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .raise-sub {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  .context-line {
+    font-size: 12px;
+    color: var(--text-dim);
+    text-align: center;
+    margin-bottom: 8px;
+    font-family: 'DM Mono', monospace;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header>
+    <h1>liar's dice</h1>
+    <span>ones wild</span>
+  </header>
+
+  <div class="card">
+    <div class="card-label">My dice — tap to cycle</div>
+    <div class="die-row" id="dice-row"></div>
+    <div class="remove-row"><button class="remove-btn" onclick="removeDie()">− remove die</button></div>
+  </div>
+
+  <div class="card">
+    <div class="row2">
+      <div>
+        <div class="field-label">Total in play</div>
+        <div class="stepper">
+          <button class="step-btn" onclick="adj('total',-1)">−</button>
+          <div class="step-val" id="total-val">15</div>
+          <button class="step-btn" onclick="adj('total',1)">+</button>
+        </div>
+      </div>
+      <div>
+        <div class="field-label">Bid quantity</div>
+        <div class="stepper">
+          <button class="step-btn" onclick="adj('qty',-1)">−</button>
+          <div class="step-val" id="qty-val">4</div>
+          <button class="step-btn" onclick="adj('qty',1)">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Bid face</div>
+    <div class="face-grid" id="bid-face-row"></div>
+  </div>
+
+  <div id="result-area"></div>
+
+</div>
+
+<script>
+const PIPS = ['⚀','⚁','⚂','⚃','⚄','⚅'];
+let myDice = [1,2,3,4,5];
+let total = 15;
+let bidQty = 4;
+let bidFace = 3;
+
+function renderDice() {
+  const row = document.getElementById('dice-row');
+  row.innerHTML = '';
+  myDice.forEach((v, i) => {
+    const d = document.createElement('div');
+    d.className = 'die';
+    d.textContent = PIPS[v - 1];
+    d.onclick = () => { myDice[i] = (myDice[i] % 6) + 1; renderDice(); calc(); };
+    row.appendChild(d);
+  });
+  if (myDice.length < 6) {
+    const add = document.createElement('div');
+    add.className = 'add-die-btn';
+    add.textContent = '+';
+    add.onclick = addDie;
+    row.appendChild(add);
+  }
+}
+
+function addDie() {
+  if (myDice.length < 6) {
+    myDice.push(1);
+    if (total <= myDice.length) total = myDice.length;
+    document.getElementById('total-val').textContent = total;
+    renderDice(); calc();
+  }
+}
+
+function removeDie() {
+  if (myDice.length > 1) { myDice.pop(); renderDice(); calc(); }
+}
+
+function adj(k, d) {
+  if (k === 'total') {
+    total = Math.max(myDice.length, Math.min(30, total + d));
+    document.getElementById('total-val').textContent = total;
+  }
+  if (k === 'qty') {
+    bidQty = Math.max(1, Math.min(30, bidQty + d));
+    document.getElementById('qty-val').textContent = bidQty;
+  }
+  calc();
+}
+
+function buildFaceRow() {
+  const row = document.getElementById('bid-face-row');
+  row.innerHTML = '';
+  for (let f = 1; f <= 6; f++) {
+    const b = document.createElement('div');
+    b.className = 'face-btn' + (f === bidFace ? ' active' : '');
+    b.textContent = PIPS[f - 1];
+    b.onclick = () => { bidFace = f; buildFaceRow(); calc(); };
+    row.appendChild(b);
+  }
+}
+
+function binom(n, k, p) {
+  if (k > n || k < 0) return 0;
+  if (p <= 0) return k === 0 ? 1 : 0;
+  if (p >= 1) return 1;
+  let log = 0;
+  for (let i = 0; i < k; i++) log += Math.log(n - i) - Math.log(i + 1);
+  log += k * Math.log(p) + (n - k) * Math.log(1 - p);
+  return Math.exp(log);
+}
+
+function probAtLeast(n, k, p) {
+  if (k <= 0) return 1;
+  if (k > n) return 0;
+  let t = 0;
+  for (let i = k; i <= n; i++) t += binom(n, i, p);
+  return Math.min(1, Math.max(0, t));
+}
+
+function calc() {
+  const unknown = Math.max(0, total - myDice.length);
+  const p = bidFace === 1 ? 1/6 : 2/6;
+  const myCount = myDice.filter(v => v === bidFace || v === 1).length;
+  const needed = Math.max(0, bidQty - myCount);
+  const probTrue = probAtLeast(unknown, needed, p);
+  const probLie = 1 - probTrue;
+  const expected = myCount + unknown * p;
+
+  const raiseNeeded = Math.max(0, (bidQty + 1) - myCount);
+  const probRaiseTrue = probAtLeast(unknown, raiseNeeded, p);
+
+  let vClass, vTitle, vSub;
+  if (probLie >= 0.55) {
+    vClass = 'verdict-good'; vTitle = 'Call the bluff';
+    vSub = `${(probLie * 100).toFixed(0)}% chance it's a lie`;
+  } else if (probLie >= 0.38) {
+    vClass = 'verdict-risky'; vTitle = 'Coin flip — your call';
+    vSub = `${(probLie * 100).toFixed(0)}% chance it's a lie`;
+  } else {
+    vClass = 'verdict-bad'; vTitle = 'Let it ride';
+    vSub = `Only ${(probLie * 100).toFixed(0)}% chance it's a lie`;
+  }
+
+  let raiseDesc;
+  if (probRaiseTrue >= 0.55) raiseDesc = 'solid raise';
+  else if (probRaiseTrue >= 0.35) raiseDesc = 'defensible bluff';
+  else raiseDesc = 'big bluff territory';
+
+  document.getElementById('result-area').innerHTML = `
+    <div class="context-line">you have ${myCount} ${PIPS[bidFace-1]} (incl. wilds) · expected: ${expected.toFixed(1)}</div>
+    <div class="verdict-card ${vClass}">
+      <div class="verdict-title">${vTitle}</div>
+      <div class="verdict-sub">${vSub}</div>
+    </div>
+    <div class="stats-row">
+      <div class="stat">
+        <div class="stat-label">Bid true</div>
+        <div class="stat-val">${(probTrue * 100).toFixed(0)}%</div>
+        <div class="bar-wrap"><div class="bar" style="width:${(probTrue*100).toFixed(0)}%;background:#378ADD;"></div></div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Bid a lie</div>
+        <div class="stat-val">${(probLie * 100).toFixed(0)}%</div>
+        <div class="bar-wrap"><div class="bar" style="width:${(probLie*100).toFixed(0)}%;background:#5a8f4e;"></div></div>
+      </div>
+    </div>
+    <div class="raise-box">
+      <div class="raise-label">Raise to ${bidQty + 1} × ${PIPS[bidFace-1]}</div>
+      <div class="raise-val">${(probRaiseTrue * 100).toFixed(0)}% chance your raise is true</div>
+      <div class="raise-sub">${raiseDesc}</div>
+    </div>
+  `;
+}
+
+renderDice();
+buildFaceRow();
+calc();
+</script>
+</body>
+</html>
