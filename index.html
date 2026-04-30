@@ -17,22 +17,22 @@
     justify-content: center;
   }
 
-  .app { width: 100%; max-width: 430px; position: relative; }
+  .app { width: 100%; max-width: 390px; }
 
-  .screen { padding: 16px 14px 40px; }
+  .screen { padding: 10px 12px 16px; }
   .screen.hidden { display: none; }
 
   header {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    margin-bottom: 20px;
-    padding: 6px 0 10px;
+    margin-bottom: 10px;
+    padding: 4px 0 6px;
   }
 
   .header-left h1 {
     font-family: 'Playfair Display', serif;
-    font-size: 34px;
+    font-size: 28px;
     font-weight: 500;
     color: #1a1a1a;
     line-height: 1;
@@ -42,9 +42,9 @@
   .header-left h1 em { font-style: italic; font-weight: 400; }
 
   .header-left p {
-    font-size: 11px;
+    font-size: 10px;
     color: #999;
-    margin-top: 5px;
+    margin-top: 3px;
     font-family: 'DM Mono', monospace;
     letter-spacing: .04em;
   }
@@ -52,15 +52,15 @@
   .settings-btn {
     background: none;
     border: 0.5px solid #ddd;
-    border-radius: 8px;
-    width: 36px;
-    height: 36px;
+    border-radius: 7px;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     color: #aaa;
-    margin-top: 4px;
+    margin-top: 2px;
     flex-shrink: 0;
   }
 
@@ -69,9 +69,9 @@
   .card {
     background: #fff;
     border: 0.5px solid #e5e2dc;
-    border-radius: 12px;
-    padding: 14px;
-    margin-bottom: 10px;
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
   }
 
   .card-label {
@@ -80,21 +80,24 @@
     letter-spacing: .09em;
     text-transform: uppercase;
     color: #aaa;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
     font-family: 'DM Mono', monospace;
   }
 
-  .die-row { display: flex; gap: 7px; flex-wrap: wrap; }
+  .die-row {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 5px;
+  }
 
   .die {
-    width: 50px;
-    height: 50px;
+    height: 46px;
     border: 0.5px solid #ddd;
-    border-radius: 8px;
+    border-radius: 7px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 26px;
+    font-size: 22px;
     cursor: pointer;
     background: #faf9f7;
     user-select: none;
@@ -104,21 +107,21 @@
   .die:active { transform: scale(.92); background: #f0ede8; }
 
   .field-label {
-    font-size: 11px;
+    font-size: 10px;
     color: #888;
-    margin-bottom: 7px;
+    margin-bottom: 5px;
     font-family: 'DM Mono', monospace;
   }
 
   .stepper { display: flex; align-items: center; }
 
   .step-btn {
-    width: 44px;
-    height: 44px;
+    width: 38px;
+    height: 38px;
     border: 0.5px solid #ddd;
     background: #faf9f7;
     color: #1a1a1a;
-    font-size: 20px;
+    font-size: 18px;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -126,32 +129,47 @@
     user-select: none;
   }
 
-  .step-btn:first-child { border-radius: 8px 0 0 8px; }
-  .step-btn:last-child { border-radius: 0 8px 8px 0; }
+  .step-btn:first-child { border-radius: 7px 0 0 7px; }
+  .step-btn:last-child { border-radius: 0 7px 7px 0; }
   .step-btn:active { background: #f0ede8; }
 
   .step-val {
-    min-width: 44px;
-    height: 44px;
+    min-width: 38px;
+    height: 38px;
     border-top: 0.5px solid #ddd;
     border-bottom: 0.5px solid #ddd;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 500;
     background: #fff;
     color: #1a1a1a;
     font-family: 'DM Mono', monospace;
   }
 
-  .face-grid { display: flex; gap: 7px; flex-wrap: wrap; }
+  .total-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .total-label { font-size: 13px; color: #555; }
+
+  .bid-inner { display: flex; align-items: flex-start; gap: 16px; }
+  .bid-qty { flex-shrink: 0; }
+  .bid-faces { flex: 1; }
+
+  .face-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
 
   .face-btn {
-    width: 46px;
-    height: 46px;
+    height: 44px;
     border: 0.5px solid #ddd;
-    border-radius: 8px;
+    border-radius: 7px;
     background: #faf9f7;
     color: #1a1a1a;
     font-size: 22px;
@@ -171,56 +189,56 @@
   .face-btn:active { transform: scale(.91); }
 
   .verdict-card {
-    border-radius: 12px;
-    padding: 14px 16px;
-    margin-bottom: 10px;
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
   }
 
   .verdict-good { background: #EAF3DE; border: 0.5px solid #97C459; }
   .verdict-risky { background: #FAEEDA; border: 0.5px solid #EF9F27; }
   .verdict-bad { background: #FCEBEB; border: 0.5px solid #F09595; }
 
-  .verdict-title { font-size: 17px; font-weight: 500; margin-bottom: 2px; }
+  .verdict-title { font-size: 15px; font-weight: 500; margin-bottom: 1px; }
   .verdict-good .verdict-title { color: #27500A; }
   .verdict-risky .verdict-title { color: #633806; }
   .verdict-bad .verdict-title { color: #791F1F; }
 
-  .verdict-sub { font-size: 13px; }
+  .verdict-sub { font-size: 12px; }
   .verdict-good .verdict-sub { color: #3B6D11; }
   .verdict-risky .verdict-sub { color: #854F0B; }
   .verdict-bad .verdict-sub { color: #A32D2D; }
 
-  .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+  .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 8px; }
 
   .stat {
     background: #fff;
     border: 0.5px solid #e5e2dc;
-    border-radius: 8px;
-    padding: 10px 12px;
+    border-radius: 7px;
+    padding: 8px 10px;
   }
 
   .stat-label {
     font-size: 10px;
     color: #aaa;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
     font-family: 'DM Mono', monospace;
     text-transform: uppercase;
     letter-spacing: .06em;
   }
 
   .stat-val {
-    font-size: 26px;
+    font-size: 22px;
     font-weight: 500;
     color: #1a1a1a;
     font-family: 'DM Mono', monospace;
   }
 
   .bar-wrap {
-    height: 4px;
+    height: 3px;
     background: #f0ede8;
     border-radius: 2px;
     overflow: hidden;
-    margin-top: 7px;
+    margin-top: 5px;
   }
 
   .bar { height: 100%; border-radius: 2px; transition: width .35s ease; }
@@ -228,36 +246,36 @@
   .raise-box {
     background: #fff;
     border: 0.5px solid #e5e2dc;
-    border-radius: 8px;
-    padding: 10px 14px;
+    border-radius: 7px;
+    padding: 8px 12px;
   }
 
   .raise-label {
     font-size: 10px;
     color: #aaa;
-    margin-bottom: 3px;
+    margin-bottom: 2px;
     font-family: 'DM Mono', monospace;
     text-transform: uppercase;
     letter-spacing: .06em;
   }
 
-  .raise-val { font-size: 14px; font-weight: 500; color: #1a1a1a; }
-  .raise-sub { font-size: 12px; color: #888; margin-top: 2px; }
+  .raise-val { font-size: 13px; font-weight: 500; color: #1a1a1a; }
+  .raise-sub { font-size: 11px; color: #888; margin-top: 1px; }
 
   .settings-header {
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-bottom: 24px;
-    padding: 6px 0 10px;
+    margin-bottom: 20px;
+    padding: 4px 0 8px;
   }
 
   .back-btn {
     background: none;
     border: 0.5px solid #ddd;
-    border-radius: 8px;
-    width: 36px;
-    height: 36px;
+    border-radius: 7px;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -270,7 +288,7 @@
 
   .settings-title {
     font-family: 'Playfair Display', serif;
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 500;
     color: #1a1a1a;
   }
@@ -279,13 +297,13 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 14px 0;
+    padding: 12px 0;
     border-bottom: 0.5px solid #e5e2dc;
   }
 
   .setting-row:last-child { border-bottom: none; }
-  .setting-label { font-size: 15px; color: #1a1a1a; }
-  .setting-sub { font-size: 12px; color: #aaa; margin-top: 2px; }
+  .setting-label { font-size: 14px; color: #1a1a1a; }
+  .setting-sub { font-size: 11px; color: #aaa; margin-top: 2px; }
 </style>
 </head>
 <body>
@@ -299,7 +317,7 @@
         <p>ones always wild</p>
       </div>
       <button class="settings-btn" onclick="showSettings()" aria-label="Settings">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
           <circle cx="8" cy="8" r="2.5"/>
           <path d="M8 1v1.5M8 13.5V15M1 8h1.5M13.5 8H15M3.05 3.05l1.06 1.06M11.89 11.89l1.06 1.06M3.05 12.95l1.06-1.06M11.89 4.11l1.06-1.06"/>
         </svg>
@@ -312,27 +330,31 @@
     </div>
 
     <div class="card">
-      <div class="field-label" style="margin-bottom:10px;">Total dice in play</div>
-      <div class="stepper" style="width:fit-content;">
-        <button class="step-btn" onclick="adj('total',-1)">−</button>
-        <div class="step-val" id="total-val">20</div>
-        <button class="step-btn" onclick="adj('total',1)">+</button>
+      <div class="total-row">
+        <div class="total-label">Total dice in play</div>
+        <div class="stepper">
+          <button class="step-btn" onclick="adj('total',-1)">−</button>
+          <div class="step-val" id="total-val">20</div>
+          <button class="step-btn" onclick="adj('total',1)">+</button>
+        </div>
       </div>
     </div>
 
     <div class="card">
       <div class="card-label">Current bid</div>
-      <div style="margin-bottom:14px;">
-        <div class="field-label">Quantity</div>
-        <div class="stepper">
-          <button class="step-btn" onclick="adj('qty',-1)">−</button>
-          <div class="step-val" id="qty-val">4</div>
-          <button class="step-btn" onclick="adj('qty',1)">+</button>
+      <div class="bid-inner">
+        <div class="bid-qty">
+          <div class="field-label">Quantity</div>
+          <div class="stepper">
+            <button class="step-btn" onclick="adj('qty',-1)">−</button>
+            <div class="step-val" id="qty-val">4</div>
+            <button class="step-btn" onclick="adj('qty',1)">+</button>
+          </div>
         </div>
-      </div>
-      <div>
-        <div class="field-label">Face</div>
-        <div class="face-grid" id="bid-face-row"></div>
+        <div class="bid-faces">
+          <div class="field-label">Face</div>
+          <div class="face-grid" id="bid-face-row"></div>
+        </div>
       </div>
     </div>
 
@@ -343,7 +365,7 @@
   <div class="screen hidden" id="settings-screen">
     <div class="settings-header">
       <button class="back-btn" onclick="showMain()" aria-label="Back">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M10 3L5 8l5 5"/>
         </svg>
       </button>
