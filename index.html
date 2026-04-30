@@ -91,13 +91,13 @@
   }
 
   .die {
-    height: 46px;
+    height: 52px;
     border: 0.5px solid #ddd;
     border-radius: 7px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 22px;
+    line-height: 1;
     cursor: pointer;
     background: #faf9f7;
     user-select: none;
@@ -148,12 +148,7 @@
     font-family: 'DM Mono', monospace;
   }
 
-  .total-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
+  .total-row { display: flex; align-items: center; justify-content: space-between; }
   .total-label { font-size: 13px; color: #555; }
 
   .bid-inner { display: flex; align-items: flex-start; gap: 16px; }
@@ -167,12 +162,12 @@
   }
 
   .face-btn {
-    height: 44px;
+    height: 48px;
     border: 0.5px solid #ddd;
     border-radius: 7px;
     background: #faf9f7;
     color: #1a1a1a;
-    font-size: 22px;
+    line-height: 1;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -188,12 +183,7 @@
 
   .face-btn:active { transform: scale(.91); }
 
-  .verdict-card {
-    border-radius: 10px;
-    padding: 10px 12px;
-    margin-bottom: 8px;
-  }
-
+  .verdict-card { border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; }
   .verdict-good { background: #EAF3DE; border: 0.5px solid #97C459; }
   .verdict-risky { background: #FAEEDA; border: 0.5px solid #EF9F27; }
   .verdict-bad { background: #FCEBEB; border: 0.5px solid #F09595; }
@@ -217,58 +207,18 @@
     padding: 8px 10px;
   }
 
-  .stat-label {
-    font-size: 10px;
-    color: #aaa;
-    margin-bottom: 2px;
-    font-family: 'DM Mono', monospace;
-    text-transform: uppercase;
-    letter-spacing: .06em;
-  }
+  .stat-label { font-size: 10px; color: #aaa; margin-bottom: 2px; font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: .06em; }
+  .stat-val { font-size: 22px; font-weight: 500; color: #1a1a1a; font-family: 'DM Mono', monospace; }
 
-  .stat-val {
-    font-size: 22px;
-    font-weight: 500;
-    color: #1a1a1a;
-    font-family: 'DM Mono', monospace;
-  }
-
-  .bar-wrap {
-    height: 3px;
-    background: #f0ede8;
-    border-radius: 2px;
-    overflow: hidden;
-    margin-top: 5px;
-  }
-
+  .bar-wrap { height: 3px; background: #f0ede8; border-radius: 2px; overflow: hidden; margin-top: 5px; }
   .bar { height: 100%; border-radius: 2px; transition: width .35s ease; }
 
-  .raise-box {
-    background: #fff;
-    border: 0.5px solid #e5e2dc;
-    border-radius: 7px;
-    padding: 8px 12px;
-  }
-
-  .raise-label {
-    font-size: 10px;
-    color: #aaa;
-    margin-bottom: 2px;
-    font-family: 'DM Mono', monospace;
-    text-transform: uppercase;
-    letter-spacing: .06em;
-  }
-
+  .raise-box { background: #fff; border: 0.5px solid #e5e2dc; border-radius: 7px; padding: 8px 12px; }
+  .raise-label { font-size: 10px; color: #aaa; margin-bottom: 2px; font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: .06em; }
   .raise-val { font-size: 13px; font-weight: 500; color: #1a1a1a; }
   .raise-sub { font-size: 11px; color: #888; margin-top: 1px; }
 
-  .settings-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 20px;
-    padding: 4px 0 8px;
-  }
+  .settings-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding: 4px 0 8px; }
 
   .back-btn {
     background: none;
@@ -286,21 +236,9 @@
 
   .back-btn:active { background: #f0ede8; }
 
-  .settings-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 22px;
-    font-weight: 500;
-    color: #1a1a1a;
-  }
+  .settings-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 500; color: #1a1a1a; }
 
-  .setting-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 0;
-    border-bottom: 0.5px solid #e5e2dc;
-  }
-
+  .setting-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 0.5px solid #e5e2dc; }
   .setting-row:last-child { border-bottom: none; }
   .setting-label { font-size: 14px; color: #1a1a1a; }
   .setting-sub { font-size: 11px; color: #aaa; margin-top: 2px; }
@@ -412,6 +350,15 @@ function adjDice(d) {
   renderDice(); calc();
 }
 
+function resizeIcons() {
+  document.querySelectorAll('.die').forEach(el => {
+    el.style.fontSize = (el.offsetHeight * 0.9) + 'px';
+  });
+  document.querySelectorAll('.face-btn').forEach(el => {
+    el.style.fontSize = (el.offsetHeight * 0.9) + 'px';
+  });
+}
+
 function renderDice() {
   const row = document.getElementById('dice-row');
   row.innerHTML = '';
@@ -422,6 +369,7 @@ function renderDice() {
     d.onclick = () => { myDice[i] = (myDice[i] % 6) + 1; renderDice(); calc(); };
     row.appendChild(d);
   });
+  requestAnimationFrame(resizeIcons);
 }
 
 function adj(k, d) {
@@ -440,6 +388,7 @@ function buildFaceRow() {
     b.onclick = () => { bidFace = f; buildFaceRow(); calc(); };
     row.appendChild(b);
   }
+  requestAnimationFrame(resizeIcons);
 }
 
 function binom(n, k, p) {
@@ -491,9 +440,12 @@ function calc() {
       <div class="raise-val">${(probRaiseTrue*100).toFixed(0)}% chance your raise is true</div>
       <div class="raise-sub">${raiseDesc}</div>
     </div>`;
+
+  requestAnimationFrame(resizeIcons);
 }
 
 renderDice(); buildFaceRow(); calc();
+window.addEventListener('resize', resizeIcons);
 </script>
 </body>
 </html>
